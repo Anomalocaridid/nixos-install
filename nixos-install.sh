@@ -15,7 +15,7 @@ curl https://raw.githubusercontent.com/Anomalocaridid/nixos-dotfiles/main/disko-
 echo "Partitioning disk with disko"
 nix run github:nix-community/disko \
 	--extra-experimental-features nix-command \
-	--extra-experimental-features flake \
+	--extra-experimental-features flakes \
 	-- \
 	--mode zap_create_mount /tmp/disko-config.nix \
 	--arg disks "[ '$DISK' ]" ||
