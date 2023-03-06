@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Config constants
-readonly DISK
-DISK="/dev/vda"
+# readonly DISK
+# DISK="/dev/vda"
 
 readonly MEMORY
 MEMORY="8G"
@@ -41,7 +41,7 @@ nix run github:nix-community/disko \
 	--extra-experimental-features flakes \
 	-- \
 	--mode zap_create_mount /tmp/disko-config.nix \
-	--arg disks [ "$DISK" ] \
+	--arg disks "[ '/dev/vda' ]" \
 	--arg installMode true ||
 	exit 1
 
