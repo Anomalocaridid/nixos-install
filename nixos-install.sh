@@ -41,7 +41,7 @@ nix run github:nix-community/disko \
 	--extra-experimental-features flakes \
 	-- \
 	--mode zap_create_mount /tmp/disko-config.nix \
-	--arg disks "[ '/dev/vda' ]" \
+	--arg disks '[ "/dev/vda" ]' \
 	--arg installMode true ||
 	exit 1
 
