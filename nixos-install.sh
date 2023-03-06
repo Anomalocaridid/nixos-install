@@ -28,7 +28,7 @@ while true; do
 	fi
 done
 
-echo -n "$password" >$KEYFILE
+echo "$password" >$KEYFILE
 
 # Download disko config
 echo "Downloading disko config"
@@ -42,7 +42,7 @@ nix run github:nix-community/disko \
 	-- \
 	--mode zap_create_mount /tmp/disko-config.nix \
 	--arg disks "[ '$DISK' ]" \
-	--arg keyFile $KEYFILE ||
+	--arg installMode true ||
 	exit 1
 
 # NOTE: Move to disko config if feasible
