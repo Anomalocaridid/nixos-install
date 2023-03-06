@@ -41,8 +41,8 @@ nix run github:nix-community/disko \
 	--extra-experimental-features flakes \
 	-- \
 	--mode zap_create_mount /tmp/disko-config.nix \
-	--arg disk "$DISK" \
-	--arg keyFile "$KEYFILE" ||
+	--argstr disk "$DISK" \
+	--argstr keyFile "$KEYFILE" ||
 	exit 1
 
 # NOTE: Move to disko config if feasible
