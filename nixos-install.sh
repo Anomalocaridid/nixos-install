@@ -1,11 +1,34 @@
 #!/usr/bin/env bash
 
 # Config constants
-# readonly DISK
-# DISK="/dev/vda"
+readonly DISK
+DISK="/dev/vda"
 
 readonly MEMORY
 MEMORY="8G"
+
+readonly KEYFILE
+KEYFILE="/tmp/passphrase.txt"
+
+# Prompt for password
+while true; do
+	read -r -s -p "Encryption password: " password
+	echo ""
+	read -r -s -p "Encryption password (again): " password2
+	echo ""
+
+	if [[ $password == "$password2" ]]; then
+		if [[ -z $password ]]; then
+			echo "ERROR: Password is empty. Please enter a different password."
+		else
+			break
+		fi
+	else
+		echo "ERROR: Passwords do not match. Please re-enter password."
+	fi
+done
+
+echo "$password" >$KEYFILE
 
 # Download disko config
 echo "Downloading disko config"
@@ -18,9 +41,9 @@ nix run github:nix-community/disko \
 	--extra-experimental-features flakes \
 	-- \
 	--mode zap_create_mount /tmp/disko-config.nix \
-	--arg disks '[ "/dev/vda" ]' ||
+	--arg disks "[ '$DISK' ]" \
+	--arg keyFile $KEYFILE ||
 	exit 1
-# \ --arg memory 'MEMORY'
 
 # NOTE: Move to disko config if feasible
 # Create blank subvolume
