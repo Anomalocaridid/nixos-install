@@ -28,7 +28,7 @@ while true; do
 	fi
 done
 
-echo "$password" >$KEYFILE
+echo -n "$password" >$KEYFILE
 
 # Download disko config
 echo "Downloading disko config"
