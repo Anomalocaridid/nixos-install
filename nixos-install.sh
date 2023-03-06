@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 
 # Config constants
-readonly DISK
 DISK="/dev/vda"
-
-readonly MEMORY
 MEMORY="8G"
-
-readonly KEYFILE
 KEYFILE="/tmp/passphrase.txt"
 
 # Prompt for password
