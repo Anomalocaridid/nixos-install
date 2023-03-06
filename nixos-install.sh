@@ -12,9 +12,9 @@ KEYFILE="/tmp/passphrase.txt"
 
 # Prompt for password
 while true; do
-	read -r -s -p "Encryption password: " password
+	read -r -s -p "Encryption password: " password </dev/tty
 	echo ""
-	read -r -s -p "Encryption password (again): " password2
+	read -r -s -p "Encryption password (again): " password2 </dev/tty
 	echo ""
 
 	if [[ $password == "$password2" ]]; then
