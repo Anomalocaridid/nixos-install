@@ -45,16 +45,13 @@ nix run github:nix-community/disko \
 echo "Creating blank root subvolume"
 btrfs subvolume snapshot /mnt /mnt/root-blank || exit 1
 
-# NOTE: Remove from script after next stable release
-# Install latest btrfs-progs
-# Needed for swapfile commands
-echo "Installing latest btrfs-progs"
-nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable || exit 1
-nix-channel --update || exit 1
-nix-env -iA nixos-unstable.btrfs-progs || exit 1
-
 # NOTE: Move to disko config if feasible
 # Create swapfile
 echo "Creating swapfile"
-btrfs filesystem mkswapfile --size "$MEMORY" /mnt/swap/swapfile || exit 1
+# NOTE: After next stable release, get rid of nix-shell invocation and run command directly
+# Use latest btrfs-progs
+nix-shell -p btrfs-progs \
+	-I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz \
+	--run "btrfs filesystem mkswapfile --size $MEMORY /mnt/swap/swapfile" ||
+	exit 1
 swapon /mnt/swap/swapfile || exit 1
