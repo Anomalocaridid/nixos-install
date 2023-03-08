@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # Config constants
-DISK="/dev/vda"
-MEMORY="8G"
-KEYFILE="/tmp/passphrase.txt"
+readonly DISK="/dev/vda"
+readonly MEMORY="8G"
+readonly KEYFILE="/tmp/passphrase.txt"
 
 # Prompt for password
 while true; do
@@ -31,22 +31,19 @@ curl https://raw.githubusercontent.com/Anomalocaridid/nixos-dotfiles/main/disko-
 
 # Partition disk with disko
 echo "Partitioning disk with disko"
-nix run github:nix-community/disko \
+
+# NOTE: Run directly as command after next stable nixpkgs release
+readonly DISKO_COMMAND="nix run github:nix-community/disko \
 	--extra-experimental-features nix-command \
 	--extra-experimental-features flakes \
 	-- \
 	--mode zap_create_mount /tmp/disko-config.nix \
-	--argstr disk "$DISK" \
-	--argstr keyFile "$KEYFILE" ||
-	exit 1
+	--argstr disk $DISK \
+	--argstr memory $MEMORY \
+	--argstr keyFile $KEYFILE" # || exit 1
 
-# NOTE: Move to disko config if feasible
-# Create swapfile
-echo "Creating swapfile"
-# NOTE: After next stable release, get rid of nix-shell invocation and run command directly
-# Use latest btrfs-progs
+# NOTE: Remove after next stable nixpkgs release
+# Necessary because btrfs-progs 6.1 or higher is needed to create swapfile
 nix-shell -p btrfs-progs \
 	-I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz \
-	--run "btrfs filesystem mkswapfile --size $MEMORY /mnt/swap/swapfile" ||
-	exit 1
-swapon /mnt/swap/swapfile || exit 1
+	--run "$DISKO_COMMAND"
