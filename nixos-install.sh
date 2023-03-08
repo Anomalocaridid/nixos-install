@@ -46,4 +46,10 @@ readonly DISKO_COMMAND="nix run github:nix-community/disko \
 # Necessary because btrfs-progs 6.1 or higher is needed to create swapfile
 nix-shell -p btrfs-progs \
 	-I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz \
-	--run "$DISKO_COMMAND"
+	--run "$DISKO_COMMAND" || exit 1
+
+# Activate swap subvolume created by disko
+# Necessary because doing it during postCreateHook makes disk busy
+# and messes up partitioning because disko needs to unmount subvolumes after creation
+echo "Activating swapfile"
+swapon /mnt/swap/swapfile || exit 1
