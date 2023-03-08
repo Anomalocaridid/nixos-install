@@ -41,11 +41,6 @@ nix run github:nix-community/disko \
 	exit 1
 
 # NOTE: Move to disko config if feasible
-# Create blank subvolume
-echo "Creating blank root subvolume"
-btrfs subvolume snapshot /mnt /mnt/root-blank || exit 1
-
-# NOTE: Move to disko config if feasible
 # Create swapfile
 echo "Creating swapfile"
 # NOTE: After next stable release, get rid of nix-shell invocation and run command directly
